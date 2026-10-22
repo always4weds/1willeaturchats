@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>1willeaturchats</title>
+  
+  <!-- PeerJS Client-side WebRTC CDN (Direct P2P, No Database) -->
+  <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+
+  <style>
+    /* ==========================================================
+       CLEAN WHITE & GREY DESIGN SYSTEM
+       ========================================================== */
+    :root {
+      --bg-page: #f1f3f5;
+      --bg-card: #ffffff;
+      --bg-subtle: #f8f9fa;
+      --border-color: #dee2e6;
+      --border-dark: #ced4da;
+      --text-main: #212529;
+      --text-muted: #6c757d;
+      --accent-grey: #495057;
+      --btn-grey: #e9ecef;
+      --btn-hover: #dde2e5;
+      --online-green: #2b8a3e;
+      --chat-outgoing: #343a40;
+      --chat-incoming: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      overflow-x: hidden;
+    }
+
+    /* FULL SCREEN APP CONTAINER */
+    .app-viewport {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      width: 100%;
+      padding: 16px 24px;
+      gap: 16px;
+    }
+
+    /* ==========================================================
+       HEADER: BIG TITLE & CREATOR SUBTITLE
+       ========================================================== */
+    .portal-header {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 18px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+    }
+
+    .brand-group h1 {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: -0.5px;
+    }
+
+    .brand-group .creator-title {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 3px;
+      font-weight: 500;
+    }
+
+    /* TOP 4-DIGIT CONNECTION PANEL */
+    .top-conn-bar {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-color);
+      padding: 8px 16px;
+      border-radius: 6px;
+    }
+
+    .conn-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .code-grid {
+      display: flex;
+      gap: 6px;
+    }
+
+    .code-box {
+      width: 32px;
+      height: 38px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-dark);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--accent-grey);
+    }
+
+    /* BUTTONS & INPUTS */
+    .action-btn {
+      background: var(--btn-grey);
+      border: 1px solid var(--border-dark);
+      color: var(--text-main);
+      padding: 7px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .action-btn:hover {
+      background: var(--btn-hover);
+    }
+    .action-btn.dark {
+      background: #343a40;
+      color: #fff;
+      border-color: #212529;
+    }
+    .action-btn.dark:hover {
+      background: #212529;
+    }
+
+    .clean-input {
+      border: 1px solid var(--border-dark);
+      background: #fff;
+      padding: 7px 10px;
+      font-size: 13px;
+      border-radius: 4px;
+      outline: none;
+      color: var(--text-main);
+    }
+    .clean-input:focus {
+      border-color: #495057;
+    }
+
+    /* ==========================================================
+       RESPONSIVE MOBILE SWITCH TABS
+       ========================================================== */
+    .mobile-tab-nav {
+      display: none;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+    }
+    .m-tab-btn {
+      padding: 10px 0;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      font-weight: 600;
+      font-size: 13px;
+      border-radius: 6px;
+      cursor: pointer;
+      color: var(--text-muted);
+    }
+    .m-tab-btn.active {
+      background: var(--accent-grey);
+      color: #fff;
+      border-color: var(--accent-grey);
+    }
+
+    /* ==========================================================
+       MAIN CONTENT: 3 FULL-SCREEN BOXES
+       ========================================================== */
+    .portal-main-grid {
+      display: grid;
+      grid-template-columns: 280px 1fr 340px;
+      gap: 16px;
+      flex: 1;
+      min-height: 0; /* Prevents overflow blowout */
+    }
+
+    .content-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    }
+
+    .box-header {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border-color);
+      background: var(--bg-subtle);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent-grey);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .box-body {
+      padding: 14px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      gap: 12px;
+    }
+
+    /* BOX 1: USERS & CONNECT */
+    .connect-card {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 12px;
+    }
+    .connect-row {
+      display: flex;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .user-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      overflow-y: auto;
+      flex: 1;
+    }
+    .user-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.1s ease;
+    }
+    .user-item:hover {
+      background: #e9ecef;
+    }
+    .user-item.active {
+      background: #e9ecef;
+      border-color: #adb5bd;
+    }
+    .user-item.active .user-name {
+      font-weight: 700;
+    }
+    .status-badge {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--online-green);
+    }
+
+    /* BOX 2: CHAT BOX */
+    .chat-history {
+      flex: 1;
+      overflow-y: auto;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .msg-group {
+      display: flex;
+      flex-direction: column;
+      max-width: 75%;
+    }
+    .msg-group.outgoing {
+      align-self: flex-end;
+    }
+    .msg-group.incoming {
+      align-self: flex-start;
+    }
+
+    .msg-sender-tag {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 3px;
+      font-weight: 600;
+    }
+    .msg-group.outgoing .msg-sender-tag {
+      text-align: right;
+    }
+
+    .msg-pill {
+      padding: 9px 13px;
+      border-radius: 8px;
+      font-size: 13px;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+    .msg-group.incoming .msg-pill {
+      background: var(--chat-incoming);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+    }
+    .msg-group.outgoing .msg-pill {
+      background: var(--chat-outgoing);
+      color: #ffffff;
+    }
+
+    .msg-timestamp {
+      font-size: 10px;
+      opacity: 0.7;
+      margin-top: 3px;
+    }
+    .msg-group.outgoing .msg-timestamp {
+      text-align: right;
+    }
+
+    .chat-input-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    /* BOX 3: FILE TRANSFER (UP/DOWN DUAL SECTIONS) */
+    .file-section {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .dropzone {
+      border: 2px dashed var(--border-dark);
+      background: #fff;
+      border-radius: 6px;
+      padding: 20px 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .dropzone:hover {
+      border-color: #adb5bd;
+      background: #fafafa;
+    }
+
+    /* Progress Bar */
+    .prog-track {
+      width: 100%;
+      height: 8px;
+      background: #dee2e6;
+      border-radius: 4px;
+      overflow: hidden;
+      display: none;
+      margin-top: 6px;
+    }
+    .prog-fill {
+      width: 0%;
+      height: 100%;
+      background: #495057;
+      transition: width 0.1s ease;
+    }
+
+    /* Download Box Items */
+    .down-card {
+      background: #fff;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    /* FOOTER BAR */
+    .portal-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: var(--text-muted);
+      padding: 0 4px;
+    }
+
+    /* ==========================================================
+       RESPONSIVE ADAPTATION (MOBILE & TABLETS)
+       ========================================================== */
+    @media (max-width: 992px) {
+      .portal-main-grid {
+        grid-template-columns: 1fr;
+      }
+      .mobile-tab-nav {
+        display: grid;
+      }
+      .content-box {
+        display: none;
+      }
+      .content-box.active-mobile-panel {
+        display: flex;
+        height: 600px;
+      }
+      .app-viewport {
+        padding: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-viewport">
+    
+    <!-- HEADER -->
+    <header class="portal-header">
+      <div class="brand-group">
+        <h1>1willeaturchats</h1>
+        <div class="creator-title">creator always4thursdays</div>
+      </div>
+
+      <!-- Temporary Code Component -->
+      <div class="top-conn-bar">
+        <span class="conn-label">4-Digit Code:</span>
+        <div class="code-grid">
+          <div class="code-box" id="c1">-</div>
+          <div class="code-box" id="c2">-</div>
+          <div class="code-box" id="c3">-</div>
+          <div class="code-box" id="c4">-</div>
+        </div>
+        <button class="action-btn" onclick="initP2PNetwork()">New Code</button>
+      </div>
+    </header>
+
+    <!-- MOBILE NAVIGATION (AUTO SHIFT ON PHONE) -->
+    <div class="mobile-tab-nav">
+      <button class="m-tab-btn active" onclick="switchMobileView('panelUsers', this)">Connections</button>
+      <button class="m-tab-btn" onclick="switchMobileView('panelChat', this)">Messages</button>
+      <button class="m-tab-btn" onclick="switchMobileView('panelFiles', this)">File Portal</button>
+    </div>
+
+    <!-- MAIN 3-PANEL RESPONSIVE GRID -->
+    <main class="portal-main-grid">
+
+      <!-- ================= 1. CONNECT & USERS BOX ================= -->
+      <section class="content-box active-mobile-panel" id="panelUsers">
+        <div class="box-header">Connected Computers</div>
+        <div class="box-body">
+          <div class="connect-card">
+            <span style="font-size:12px; font-weight:600; color:var(--text-muted);">CONNECT TO COMPUTER</span>
+            <div class="connect-row">
+              <input type="text" id="targetCodeInput" class="clean-input" maxlength="4" placeholder="4-digit code (e.g. 8412)" style="width:100%;" />
+              <button class="action-btn dark" onclick="connectToRemote()">Connect</button>
+            </div>
+          </div>
+
+          <div style="font-size:11px; font-weight:700; color:var(--text-muted); margin-top:6px;">ACTIVE CONNECTIONS:</div>
+          <div class="user-list" id="usersListContainer">
+            <div style="color:var(--text-muted); font-size:12px; text-align:center; padding:20px 0;">
+              No peers connected yet.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 2. CHAT BOX ================= -->
+      <section class="content-box" id="panelChat">
+        <div class="box-header">
+          <span id="chatTitle">Direct P2P Chat</span>
+          <span id="activeUserBadge" style="font-size:11px; font-weight:500; color:var(--text-muted);">No Peer Selected</span>
+        </div>
+        <div class="box-body">
+          <div class="chat-history" id="chatHistoryBox">
+            <div style="margin: auto; color: var(--text-muted); font-size: 13px; text-align: center;">
+              Select a connected computer to start messaging.
+            </div>
+          </div>
+
+          <div class="chat-input-row">
+            <input type="text" id="chatInputField" class="clean-input" placeholder="Type a secure direct message..." style="flex:1;" onkeydown="if(event.key==='Enter') sendChatMessage()" />
+            <button class="action-btn dark" onclick="sendChatMessage()">Send</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 3. LARGE FILE TRANSFER BOX ================= -->
+      <section class="content-box" id="panelFiles">
+        <div class="box-header">Direct File Transfer</div>
+        <div class="box-body">
+          
+          <!-- UPLOAD COMPONENT -->
+          <div class="file-section">
+            <span style="font-size:12px; font-weight:600; color:var(--text-muted);">SEND DIRECT FILE</span>
+            <input type="file" id="localFileInput" style="display:none;" onchange="handleFilePick(this.files)" />
+            <div class="dropzone" onclick="document.getElementById('localFileInput').click()">
+              <div style="font-weight:600; font-size:13px; color:var(--accent-grey);">Click or Drop File Here</div>
+              <div id="pickedFileName" style="font-size:12px; color:var(--text-muted); margin-top:4px;">Supports any large file format</div>
+            </div>
+
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span id="pickedFileSize" style="font-size:11px; color:var(--text-muted);">Size: 0 MB</span>
+              <button class="action-btn dark" id="uploadActionBtn" onclick="transmitFile()">Transmit File</button>
+            </div>
+
+            <div class="prog-track" id="fileProgressTrack">
+              <div class="prog-fill" id="fileProgressFill"></div>
+            </div>
+          </div>
+
+          <!-- DOWNLOAD COMPONENT -->
+          <div class="file-section" style="flex:1; overflow-y:auto;">
+            <span style="font-size:12px; font-weight:600; color:var(--text-muted);">INCOMING TRANSFERS</span>
+            <div id="incomingDownloadsContainer">
+              <div style="color:var(--text-muted); font-size:12px; text-align:center; padding:16px 0;">
+                No incoming files received.
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+
+    <!-- FOOTER STATUS -->
+    <footer class="portal-footer">
+      <span id="networkStatus">Network: Initializing P2P mesh...</span>
+      <span>P2P Direct Pipe • Zero Cloud Storage</span>
+    </footer>
+
+  </div>
+
+  <!-- ==========================================================
+       CORE SCRIPT (WebRTC DataChannel Streaming & State)
+       ========================================================== */ -->
+  <script>
+    const NAMESPACE_KEY = "uu-p2p-node-";
+    let myCode = "";
+    let peerInstance = null;
+    let localUsername = "PC_" + Math.floor(1000 + Math.random() * 9000);
+
+    // Active peers state: { [code]: { conn, username, chats: [], files: [] } }
+    let connectedPeers = {};
+    let activeSelectedCode = null;
+
+    // File transmission configuration (64KB chunks for high performance)
+    const CHUNK_LEN = 64 * 1024;
+    let pendingSendFile = null;
+    let incomingFileAssembly = {};
+
+    function generateCode() {
+      return Math.floor(1000 + Math.random() * 9000).toString();
+    }
+
+    function initP2PNetwork() {
+      if (peerInstance) {
+        peerInstance.destroy();
+      }
+
+      myCode = generateCode();
+      renderCodeDisplay(myCode);
+
+      peerInstance = new Peer(NAMESPACE_KEY + myCode, { debug: 1 });
+
+      peerInstance.on("open", (id) => {
+        document.getElementById("networkStatus").innerText = `Ready • Listening on Local Code: ${myCode}`;
+      });
+
+      peerInstance.on("connection", (conn) => {
+        handleIncomingConnection(conn);
+      });
+
+      peerInstance.on("error", (err) => {
+        if (err.type === "unavailable-id") {
+          initP2PNetwork();
+        } else {
+          document.getElementById("networkStatus").innerText = "Status: " + err.type;
+        }
+      });
+    }
+
+    function renderCodeDisplay(code) {
+      const arr = code.split("");
+      document.getElementById("c1").innerText = arr[0] || "-";
+      document.getElementById("c2").innerText = arr[1] || "-";
+      document.getElementById("c3").innerText = arr[2] || "-";
+      document.getElementById("c4").innerText = arr[3] || "-";
+    }
+
+    function connectToRemote() {
+      const input = document.getElementById("targetCodeInput");
+      const target = input.value.trim();
+
+      if (target.length !== 4 || isNaN(target)) {
+        alert("Please enter a valid 4-digit code.");
+        return;
+      }
+      if (target === myCode) {
+        alert("You cannot connect to your own machine.");
+        return;
+      }
+      if (connectedPeers[target]) {
+        alert("Computer is already in your connection list.");
+        return;
+      }
+
+      document.getElementById("networkStatus").innerText = `Handshaking with ${target}...`;
+      const conn = peerInstance.connect(NAMESPACE_KEY + target, {
+        metadata: { username: localUsername, code: myCode }
+      });
+
+      handleIncomingConnection(conn);
+      input.value = "";
+    }
+
+    function handleIncomingConnection(conn) {
+      const remoteCode = conn.peer.replace(NAMESPACE_KEY, "");
+
+      conn.on("open", () => {
+        conn.send({ type: "HELLO", username: localUsername, code: myCode });
+
+        connectedPeers[remoteCode] = {
+          conn: conn,
+          username: (conn.metadata && conn.metadata.username) ? conn.metadata.username : `Computer_${remoteCode}`,
+          chats: [],
+          files: []
+        };
+
+        if (!activeSelectedCode) {
+          selectActivePeer(remoteCode);
+        }
+
+        renderPeersList();
+        document.getElementById("networkStatus").innerText = `Direct Connection Established: ${remoteCode}`;
+      });
+
+      conn.on("data", (data) => {
+        onPeerDataReceived(remoteCode, data);
+      });
+
+      conn.on("close", () => {
+        delete connectedPeers[remoteCode];
+        if (activeSelectedCode === remoteCode) {
+          activeSelectedCode = Object.keys(connectedPeers)[0] || null;
+        }
+        renderPeersList();
+        renderChatMessages();
+        document.getElementById("networkStatus").innerText = `Disconnected from ${remoteCode}`;
+      });
+    }
+
+    function onPeerDataReceived(senderCode, data) {
+      if (!connectedPeers[senderCode]) return;
+
+      if (data.type === "HELLO") {
+        connectedPeers[senderCode].username = data.username;
+        renderPeersList();
+        if (activeSelectedCode === senderCode) updateChatTopHeader();
+      } else if (data.type === "TEXT") {
+        connectedPeers[senderCode].chats.push({
+          sender: connectedPeers[senderCode].username,
+          text: data.text,
+          time: data.time,
+          isMe: false
+        });
+        if (activeSelectedCode === senderCode) renderChatMessages();
+      } else if (data.type === "FILE_META") {
+        incomingFileAssembly[data.fileId] = {
+          name: data.name,
+          size: data.size,
+          mime: data.mime,
+          total: data.totalChunks,
+          received: 0,
+          parts: [],
+          sender: connectedPeers[senderCode].username
+        };
+      } else if (data.type === "FILE_CHUNK") {
+        const item = incomingFileAssembly[data.fileId];
+        if (item) {
+          item.parts[data.chunkIndex] = data.buffer;
+          item.received++;
+
+          if (item.received === item.total) {
+            const blob = new Blob(item.parts, { type: item.mime });
+            connectedPeers[senderCode].files.push({
+              name: item.name,
+              size: (item.size / (1024 * 1024)).toFixed(2) + " MB",
+              sender: item.sender,
+              blobUrl: URL.createObjectURL(blob)
+            });
+            renderDownloadsList();
+            delete incomingFileAssembly[data.fileId];
+          }
+        }
+      }
+    }
+
+    function renderPeersList() {
+      const container = document.getElementById("usersListContainer");
+      const keys = Object.keys(connectedPeers);
+
+      if (keys.length === 0) {
+        container.innerHTML = `<div style="color:var(--text-muted); font-size:12px; text-align:center; padding:20px 0;">No peers connected yet.</div>`;
+        return;
+      }
+
+      container.innerHTML = "";
+      keys.forEach((code) => {
+        const user = connectedPeers[code];
+        const isSelected = activeSelectedCode === code;
+        const row = document.createElement("div");
+        row.className = `user-item ${isSelected ? "active" : ""}`;
+        row.onclick = () => selectActivePeer(code);
+
+        row.innerHTML = `
+          <div class="status-badge"></div>
+          <div style="flex:1;">
+            <div class="user-name" style="font-size:13px;">${escapeHtml(user.username)}</div>
+            <div style="font-size:11px; color:var(--text-muted);">Code: ${code}</div>
+          </div>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    function selectActivePeer(code) {
+      activeSelectedCode = code;
+      renderPeersList();
+      updateChatTopHeader();
+      renderChatMessages();
+      renderDownloadsList();
+    }
+
+    function updateChatTopHeader() {
+      const title = document.getElementById("chatTitle");
+      const badge = document.getElementById("activeUserBadge");
+
+      if (activeSelectedCode && connectedPeers[activeSelectedCode]) {
+        title.innerText = `Chat: ${connectedPeers[activeSelectedCode].username}`;
+        badge.innerText = `Code: ${activeSelectedCode}`;
+      } else {
+        title.innerText = "Direct P2P Chat";
+        badge.innerText = "No Peer Selected";
+      }
+    }
+
+    function sendChatMessage() {
+      if (!activeSelectedCode || !connectedPeers[activeSelectedCode]) {
+        alert("Select a connected computer to send message.");
+        return;
+      }
+
+      const input = document.getElementById("chatInputField");
+      const msg = input.value.trim();
+      if (!msg) return;
+
+      const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      connectedPeers[activeSelectedCode].conn.send({
+        type: "TEXT",
+        text: msg,
+        time: time
+      });
+
+      connectedPeers[activeSelectedCode].chats.push({
+        sender: "Me",
+        text: msg,
+        time: time,
+        isMe: true
+      });
+
+      input.value = "";
+      renderChatMessages();
+    }
+
+    function renderChatMessages() {
+      const box = document.getElementById("chatHistoryBox");
+      if (!activeSelectedCode || !connectedPeers[activeSelectedCode]) {
+        box.innerHTML = `<div style="margin: auto; color: var(--text-muted); font-size: 13px; text-align: center;">Select a connected computer to start messaging.</div>`;
+        return;
+      }
+
+      const list = connectedPeers[activeSelectedCode].chats;
+      if (list.length === 0) {
+        box.innerHTML = `<div style="margin: auto; color: var(--text-muted); font-size: 13px; text-align: center;">Chat history is empty. Send a message!</div>`;
+        return;
+      }
+
+      box.innerHTML = "";
+      list.forEach((c) => {
+        const wrap = document.createElement("div");
+        wrap.className = `msg-group ${c.isMe ? "outgoing" : "incoming"}`;
+        wrap.innerHTML = `
+          <div class="msg-sender-tag">${c.isMe ? "Me" : escapeHtml(c.sender)}</div>
+          <div class="msg-pill">
+            ${escapeHtml(c.text)}
+            <div class="msg-timestamp">${c.time}</div>
+          </div>
+        `;
+        box.appendChild(wrap);
+      });
+
+      box.scrollTop = box.scrollHeight;
+    }
+
+    function handleFilePick(files) {
+      if (!files || files.length === 0) return;
+      pendingSendFile = files[0];
+      document.getElementById("pickedFileName").innerText = pendingSendFile.name;
+      const mb = (pendingSendFile.size / (1024 * 1024)).toFixed(2);
+      document.getElementById("pickedFileSize").innerText = `Size: ${mb} MB`;
+    }
+
+    async function transmitFile() {
+      if (!activeSelectedCode || !connectedPeers[activeSelectedCode]) {
+        alert("Please select an active computer connection.");
+        return;
+      }
+      if (!pendingSendFile) {
+        alert("Please browse and select a file first.");
+        return;
+      }
+
+      const conn = connectedPeers[activeSelectedCode].conn;
+      const file = pendingSendFile;
+      const fileId = "p2p_file_" + Date.now();
+      const totalChunks = Math.ceil(file.size / CHUNK_LEN);
+
+      const track = document.getElementById("fileProgressTrack");
+      const fill = document.getElementById("fileProgressFill");
+      const btn = document.getElementById("uploadActionBtn");
+
+      track.style.display = "block";
+      fill.style.width = "0%";
+      btn.disabled = true;
+
+      conn.send({
+        type: "FILE_META",
+        fileId: fileId,
+        name: file.name,
+        size: file.size,
+        mime: file.type || "application/octet-stream",
+        totalChunks: totalChunks
+      });
+
+      for (let i = 0; i < totalChunks; i++) {
+        const start = i * CHUNK_LEN;
+        const end = Math.min(file.size, start + CHUNK_LEN);
+        const slice = file.slice(start, end);
+        const buffer = await slice.arrayBuffer();
+
+        conn.send({
+          type: "FILE_CHUNK",
+          fileId: fileId,
+          chunkIndex: i,
+          buffer: buffer
+        });
+
+        const percent = Math.round(((i + 1) / totalChunks) * 100);
+        fill.style.width = percent + "%";
+
+        if (i % 8 === 0) {
+          await new Promise(r => setTimeout(r, 6));
+        }
+      }
+
+      document.getElementById("networkStatus").innerText = `Transmitted "${file.name}" to target node.`;
+      setTimeout(() => {
+        track.style.display = "none";
+        fill.style.width = "0%";
+        btn.disabled = false;
+      }, 900);
+    }
+
+    function renderDownloadsList() {
+      const container = document.getElementById("incomingDownloadsContainer");
+      if (!activeSelectedCode || !connectedPeers[activeSelectedCode]) {
+        container.innerHTML = `<div style="color:var(--text-muted); font-size:12px; text-align:center; padding:16px 0;">No incoming files received.</div>`;
+        return;
+      }
+
+      const files = connectedPeers[activeSelectedCode].files;
+      if (files.length === 0) {
+        container.innerHTML = `<div style="color:var(--text-muted); font-size:12px; text-align:center; padding:16px 0;">No incoming files received.</div>`;
+        return;
+      }
+
+      container.innerHTML = "";
+      files.forEach((f, idx) => {
+        const card = document.createElement("div");
+        card.className = "down-card";
+        card.innerHTML = `
+          <div style="font-weight:600; font-size:13px; color:var(--text-main); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+            ${escapeHtml(f.name)}
+          </div>
+          <div style="font-size:11px; color:var(--text-muted);">${f.size} • from ${escapeHtml(f.sender)}</div>
+          <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:4px;">
+            <a href="${f.blobUrl}" download="${escapeHtml(f.name)}" class="action-btn dark" style="text-decoration:none;">Accept & Download</a>
+            <button class="action-btn" onclick="dismissDownload(${idx})">Dismiss</button>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function dismissDownload(idx) {
+      if (activeSelectedCode && connectedPeers[activeSelectedCode]) {
+        connectedPeers[activeSelectedCode].files.splice(idx, 1);
+        renderDownloadsList();
+      }
+    }
+
+    /* Mobile Tab Switcher */
+    function switchMobileView(panelId, btn) {
+      document.querySelectorAll(".content-box").forEach(el => el.classList.remove("active-mobile-panel"));
+      document.querySelectorAll(".m-tab-btn").forEach(el => el.classList.remove("active"));
+
+      document.getElementById(panelId).classList.add("active-mobile-panel");
+      btn.classList.add("active");
+    }
+
+    function escapeHtml(str) {
+      if (!str) return "";
+      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      initP2PNetwork();
+    });
+  </script>
+</body>
+</html>
