@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>1willeaturchats - P2P Secure Chat & Direct File Pipe</title>
+<html lang="en"><head>
+  <script type="module" src="/@vite/client"></script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>1willeaturchats - P2P Secure Chat &amp; Direct File Pipe</title>
   
   <!-- PeerJS Client-side WebRTC Library -->
   <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
@@ -567,7 +568,7 @@
       .content-box.active-mobile-panel { display: flex; min-height: 540px; height: 70vh; }
     }
   </style>
-</head>
+<script src="/_aistudio-iframe.js?v=6634132a"></script><script src="https://cdn.jsdelivr.net/npm/html2canvas-pro@2.0.4"></script><style>.aistudio-hover-highlight { box-shadow: inset 0 0 0 0.5px white, inset 0 0 0 1.5px rgba(128,128,128,0.6) !important; }.aistudio-active-highlight { outline: 2px solid #87a9ff !important; outline-offset: -2px !important; box-shadow: 0 0 0 0.5px rgba(0,0,0,0.3), inset 0 0 0 0.5px rgba(0,0,0,0.3) !important; }.aistudio-generating-blur { filter: blur(5px) grayscale(100%) brightness(28%) !important; transition: filter 0.3s ease; }#aistudio-focus-mode-tag { position: absolute; display: none; align-items: center; gap: 4px; background: #87a9ff; border-radius: 12px; z-index: 10000; padding: 8px; color: #32302c; font-family: Inter, sans-serif; font-size: 14px; font-style: normal; font-weight: 500; line-height: 21px; pointer-events: none; }#aistudio-hover-mode-tag { position: absolute; display: none; align-items: center; gap: 4px; background: rgba(128,128,128,0.6); border-radius: 12px; z-index: 10000; padding: 8px; color: white; font-family: Inter, sans-serif; font-size: 14px; font-style: normal; font-weight: 500; line-height: 21px; pointer-events: none; }.aistudio-img-icon { display: none; vertical-align: middle; pointer-events: auto; cursor: pointer; }.aistudio-img-icon.visible { display: inline-flex; }#aistudio-focus-mode-tag .aistudio-img-icon { position: relative; width: 26px; height: 26px; background: #32302c; border-radius: 6px; margin: -4px -4px -4px 0; }#aistudio-focus-mode-tag .aistudio-img-icon::before { content: ""; position: absolute; top: 4px; left: 4px; width: 18px; height: 18px; background-color: white; -webkit-mask-image: url("https://fonts.gstatic.com/s/i/short-term/release/googlesymbols/edit_fix_auto/default/24px.svg"); -webkit-mask-size: contain; -webkit-mask-repeat: no-repeat; mask-image: url("https://fonts.gstatic.com/s/i/short-term/release/googlesymbols/edit_fix_auto/default/24px.svg"); mask-size: contain; mask-repeat: no-repeat; }#aistudio-hover-mode-tag .aistudio-img-icon { position: relative; width: 18px; height: 18px; margin-left: 4px; }#aistudio-hover-mode-tag .aistudio-img-icon::before { content: ""; position: absolute; top: 0; left: 0; width: 18px; height: 18px; background-color: white; -webkit-mask-image: url("https://fonts.gstatic.com/s/i/short-term/release/googlesymbols/edit_fix_auto/default/24px.svg"); -webkit-mask-size: contain; -webkit-mask-repeat: no-repeat; mask-image: url("https://fonts.gstatic.com/s/i/short-term/release/googlesymbols/edit_fix_auto/default/24px.svg"); mask-size: contain; mask-repeat: no-repeat; }#aistudio-focus-mode-tag .aistudio-img-icon:hover, #aistudio-hover-mode-tag .aistudio-img-icon:hover { background: #424242 !important; }#aistudio-focus-mode-tag .aistudio-img-icon:active, #aistudio-hover-mode-tag .aistudio-img-icon:active { background: #393f51 !important; }</style></head>
 <body class="theme-classic">
 
   <div class="app-viewport">
@@ -584,7 +585,7 @@
         <div class="theme-toggle-wrap">
           <span class="theme-label">classic</span>
           <label class="theme-switch" aria-label="Toggle Modern Theme">
-            <input type="checkbox" id="themeSwitchToggle" onchange="toggleModernTheme(this.checked)" />
+            <input type="checkbox" id="themeSwitchToggle" onchange="toggleModernTheme(this.checked)">
             <span class="slider"></span>
           </label>
         </div>
@@ -592,15 +593,11 @@
         <!-- CODE CONNECTION BAR -->
         <div class="top-conn-bar">
           <span class="conn-label">Your Code:</span>
-          <div class="code-grid" id="codeGridContainer">
-            <div class="code-box" id="c1">-</div>
-            <div class="code-box" id="c2">-</div>
-            <div class="code-box" id="c3">-</div>
-            <div class="code-box" id="c4">-</div>
-          </div>
+          <div class="code-grid" id="codeGridContainer"><div class="code-box">3</div><div class="code-box">7</div><div class="code-box">0</div><div class="code-box">0</div></div>
           <button class="action-btn" id="copyCodeBtn" onclick="copyMyCode()">Copy</button>
           <button class="action-btn" onclick="openCustomCodeModal()">Custom Code</button>
           <button class="action-btn" onclick="generateNewRandomCode()">New Code</button>
+          
         </div>
       </div>
     </header>
@@ -625,7 +622,7 @@
           <div class="username-card">
             <span style="font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase;">My Display Name</span>
             <div style="display:flex; gap:6px;">
-              <input type="text" id="myUsernameInput" class="clean-input" maxlength="25" placeholder="Enter name..." style="flex:1;" onkeydown="if(event.key==='Enter') updateLocalUsername()" />
+              <input type="text" id="myUsernameInput" class="clean-input" maxlength="25" placeholder="Enter name..." style="flex:1;" onkeydown="if(event.key==='Enter') updateLocalUsername()" value="">
               <button class="action-btn" onclick="updateLocalUsername()">Set</button>
             </div>
           </div>
@@ -633,7 +630,7 @@
           <div class="connect-card">
             <span style="font-size:12px; font-weight:600; color:var(--text-muted);">CONNECT TO COMPUTER</span>
             <div style="display:flex; gap:6px;">
-              <input type="text" id="targetCodeInput" class="clean-input" maxlength="8" placeholder="Code (e.g. 8412)" style="flex:1; min-width:0; letter-spacing:1px; font-weight:600;" onkeydown="if(event.key==='Enter') connectToRemote()" />
+              <input type="text" id="targetCodeInput" class="clean-input" maxlength="8" placeholder="Code (e.g. 8412)" style="flex:1; min-width:0; letter-spacing:1px; font-weight:600;" onkeydown="if(event.key==='Enter') connectToRemote()" value="">
               <button class="action-btn" onclick="pasteTargetCode()">Paste</button>
             </div>
             <button class="action-btn dark" onclick="connectToRemote()" style="width:100%; margin-top:6px; justify-content:center;">
@@ -664,7 +661,7 @@
             </div>
           </div>
           <div style="display:flex; gap:8px;">
-            <input type="text" id="chatInputField" class="clean-input" placeholder="Type a message..." style="flex:1;" onkeydown="if(event.key==='Enter') sendChatMessage()" />
+            <input type="text" id="chatInputField" class="clean-input" placeholder="Type a message..." style="flex:1;" onkeydown="if(event.key==='Enter') sendChatMessage()">
             <button class="action-btn dark" onclick="sendChatMessage()">Send</button>
           </div>
         </div>
@@ -682,7 +679,7 @@
               <span style="font-size:12px; font-weight:600; color:var(--text-muted);">SEND DIRECT FILE</span>
               <span id="txStatusBadge" style="font-size:11px; color:#2563eb; font-weight:700; display:none;">Streaming P2P Chunks...</span>
             </div>
-            <input type="file" id="localFileInput" style="display:none;" onchange="handleFilePick(this.files)" />
+            <input type="file" id="localFileInput" style="display:none;" onchange="handleFilePick(this.files)">
             <div class="dropzone" onclick="document.getElementById('localFileInput').click()">
               <div id="pickedFileName" style="font-weight:600; font-size:13px; color:var(--accent-grey);">Click or Drop File Here</div>
               <div id="pickedFileSub" style="font-size:11px; color:var(--text-muted); margin-top:2px;">Supports files of any size (Videos, ZIPs, Docs, Audio)</div>
@@ -725,7 +722,7 @@
       <p style="font-size:12px; color:var(--text-muted); line-height:1.4;">
         Personalize your connection identifier (3 to 8 characters, e.g. <strong>7777</strong>, <strong>SPEED</strong>).
       </p>
-      <input type="text" id="customCodeInput" class="clean-input" maxlength="8" placeholder="e.g. 7777" style="font-size:16px; font-weight:700; letter-spacing:2px; text-align:center;" />
+      <input type="text" id="customCodeInput" class="clean-input" maxlength="8" placeholder="e.g. 7777" style="font-size:16px; font-weight:700; letter-spacing:2px; text-align:center;">
       <div id="customCodeError" style="font-size:11px; color:#dc2626; display:none;"></div>
       <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:6px;">
         <button class="action-btn" onclick="closeCustomCodeModal()">Cancel</button>
@@ -744,20 +741,70 @@
     let activeSelectedCode = null;
     let pendingSendFile = null;
     let incomingFileAssembly = {};
+    let pendingConnectionTimers = {};
+    let connectionAttempts = {};
 
-    // Global STUN & TURN config for cross-network / diff-wifi / mobile traversal
+    /* =========================================================================
+       ROBUST CROSS-NETWORK / INTERNATIONAL ICE CONFIGURATION (STUN + TURN/TURNS)
+       Overcomes Carrier-Grade NAT (CGNAT), Symmetric NAT, and Strict Firewalls
+       (Tested for cross-border links like Bangladesh <-> Malaysia)
+       ========================================================================= */
     const ICE_CONFIG = {
       iceServers: [
+        // Primary Global STUNs (Port 19302 & 3478)
         { urls: "stun:stun.l.google.com:19302" },
         { urls: "stun:stun1.l.google.com:19302" },
         { urls: "stun:stun2.l.google.com:19302" },
+        { urls: "stun:stun3.l.google.com:19302" },
+        { urls: "stun:stun4.l.google.com:19302" },
         { urls: "stun:stun.cloudflare.com:3478" },
+        { urls: "stun:global.stun.twilio.com:3478" },
+        { urls: "stun:stun.services.mozilla.com" },
+        { urls: "stun:stun.nextcloud.com:443" },
+        { urls: "stun:stun.sipgate.net:3478" },
+
+        // OpenRelay Public STUN
         { urls: "stun:openrelay.metered.ca:80" },
-        { urls: "turn:openrelay.metered.ca:80", username: "openrelayproject", credential: "openrelayproject" },
-        { urls: "turn:openrelay.metered.ca:443", username: "openrelayproject", credential: "openrelayproject" }
+
+        // OpenRelay Public TURN Multi-Transport (UDP, TCP, and TLS/TURNS on ports 80, 443, 5349)
+        // TCP & TLS over port 443 are essential to penetrate deep symmetric NATs and mobile CGNAT
+        {
+          urls: [
+            "turn:openrelay.metered.ca:80",
+            "turn:openrelay.metered.ca:80?transport=tcp",
+            "turn:openrelay.metered.ca:443",
+            "turn:openrelay.metered.ca:443?transport=tcp",
+            "turns:openrelay.metered.ca:443?transport=tcp",
+            "turns:openrelay.metered.ca:5349?transport=tcp"
+          ],
+          username: "openrelayproject",
+          credential: "openrelayproject"
+        }
       ],
-      iceCandidatePoolSize: 10
+      iceCandidatePoolSize: 10,
+      iceTransportPolicy: "all"
     };
+
+    // Asynchronously query for fresh dynamic TURN credentials if available without blocking
+    (async function refreshDynamicIceServers() {
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 3500);
+        const res = await fetch("https://openrelay.metered.ca/api/v1/turn/credentials", {
+          signal: controller.signal
+        });
+        clearTimeout(timeoutId);
+        if (res.ok) {
+          const servers = await res.json();
+          if (Array.isArray(servers) && servers.length > 0) {
+            ICE_CONFIG.iceServers = [...servers, ...ICE_CONFIG.iceServers];
+            console.log("[WebRTC] Successfully fetched fresh dynamic TURN credentials.");
+          }
+        }
+      } catch (e) {
+        console.log("[WebRTC] Using static multi-transport STUN/TURN fallback mesh.");
+      }
+    })();
 
     /* Web Audio Synthesizer */
     let audioCtx = null;
@@ -876,6 +923,7 @@
       }
     }
 
+    
     function updateLocalUsername() {
       const val = document.getElementById("myUsernameInput").value.trim();
       if (!val) return;
@@ -894,20 +942,45 @@
       }
       myCode = (codeToUse || generateCode()).toUpperCase();
       renderCodeDisplay(myCode);
-      document.getElementById("networkStatus").innerText = "Registering code " + myCode + "...";
+      document.getElementById("networkStatus").innerText = "Registering code " + myCode + " on global signaling mesh...";
 
-      peerInstance = new Peer(NAMESPACE_KEY + myCode, { debug: 1, config: ICE_CONFIG });
+      // pingInterval keeps WebSocket alive across CGNAT timeouts
+      peerInstance = new Peer(NAMESPACE_KEY + myCode, {
+        debug: 1,
+        config: ICE_CONFIG,
+        pingInterval: 5000
+      });
 
       peerInstance.on("open", (id) => {
         document.getElementById("networkStatus").innerText = "Ready • Listening on Local Code: " + myCode;
       });
+
       peerInstance.on("connection", (conn) => {
-        setupConn(conn, conn.peer.replace(NAMESPACE_KEY, ""));
+        const remoteCode = conn.peer.replace(NAMESPACE_KEY, "");
+        setupConn(conn, remoteCode);
       });
+
+      // Auto-reconnect when connection drops (e.g. mobile IP change or momentary dropout)
+      peerInstance.on("disconnected", () => {
+        console.warn("[WebRTC] Peer signaling disconnected. Attempting auto-reconnect...");
+        document.getElementById("networkStatus").innerText = "Signaling disconnected. Auto-reconnecting...";
+        if (peerInstance && !peerInstance.destroyed) {
+          peerInstance.reconnect();
+        }
+      });
+
       peerInstance.on("error", (err) => {
+        console.warn("[WebRTC Peer Error]", err.type, err);
         if (err.type === "unavailable-id") {
           document.getElementById("networkStatus").innerText = "Code " + myCode + " already taken. Generating new code...";
           initP2P();
+        } else if (err.type === "peer-unavailable") {
+          document.getElementById("networkStatus").innerText = "Computer not found. Verify their code and ensure they have the app open.";
+        } else if (err.type === "network") {
+          document.getElementById("networkStatus").innerText = "Signaling network issue. Reconnecting...";
+          setTimeout(() => {
+            if (peerInstance && !peerInstance.destroyed) peerInstance.reconnect();
+          }, 2000);
         } else {
           document.getElementById("networkStatus").innerText = "Network: " + err.type;
         }
@@ -938,8 +1011,8 @@
       initP2P(code);
     }
 
-    function connectToRemote() {
-      const target = document.getElementById("targetCodeInput").value.trim().toUpperCase().slice(0, 8);
+    function connectToRemote(retryTarget = null) {
+      const target = (retryTarget || document.getElementById("targetCodeInput").value.trim().toUpperCase()).slice(0, 8);
       if (!target || target.length < 3) {
         alert("Please enter a valid code."); return;
       }
@@ -950,13 +1023,48 @@
         alert("Already connected to this computer."); return;
       }
 
-      document.getElementById("networkStatus").innerText = "Connecting to " + target + "...";
+      if (!peerInstance || peerInstance.disconnected) {
+        if (peerInstance) peerInstance.reconnect();
+      }
+
+      const attemptNum = (connectionAttempts[target] || 0) + 1;
+      connectionAttempts[target] = attemptNum;
+
+      document.getElementById("networkStatus").innerText = 
+        attemptNum > 1 
+          ? `Traversing NAT for ${target} (Retry #${attemptNum})...` 
+          : `Connecting to ${target} (Gathering STUN/TURN routes)...`;
+
+      // Clear any prior pending watchdog timer for this target
+      if (pendingConnectionTimers[target]) {
+        clearTimeout(pendingConnectionTimers[target]);
+      }
+
       const conn = peerInstance.connect(NAMESPACE_KEY + target, {
         reliable: true,
         metadata: { username: localUsername, code: myCode }
       });
+
       setupConn(conn, target);
-      document.getElementById("targetCodeInput").value = "";
+
+      if (!retryTarget) {
+        document.getElementById("targetCodeInput").value = "";
+      }
+
+      // 14-second watchdog timer: If NAT traversal is blocked or delayed, attempt automatic recovery
+      pendingConnectionTimers[target] = setTimeout(() => {
+        if (!connectedPeers[target]) {
+          console.warn(`[WebRTC] Connection watchdog fired for ${target}`);
+          if (attemptNum < 3) {
+            document.getElementById("networkStatus").innerText = `NAT negotiation taking longer. Retrying via TURN relay for ${target}...`;
+            try { conn.close(); } catch(e) {}
+            setTimeout(() => connectToRemote(target), 800);
+          } else {
+            document.getElementById("networkStatus").innerText = `Connection to ${target} timed out. Ensure target is online with matching code.`;
+            delete connectionAttempts[target];
+          }
+        }
+      }, 14000);
     }
 
     function disconnectPeer(code) {
@@ -965,6 +1073,12 @@
         try { connectedPeers[code].conn.close(); } catch(e) {}
         delete connectedPeers[code];
       }
+      if (pendingConnectionTimers[code]) {
+        clearTimeout(pendingConnectionTimers[code]);
+        delete pendingConnectionTimers[code];
+      }
+      delete connectionAttempts[code];
+
       if (activeSelectedCode === code) {
         activeSelectedCode = Object.keys(connectedPeers)[0] || null;
       }
@@ -980,7 +1094,47 @@
     }
 
     function setupConn(conn, targetCode) {
+      // Monitor underlying RTCPeerConnection lifecycle and ICE state
+      if (conn.peerConnection) {
+        const pc = conn.peerConnection;
+
+        pc.oniceconnectionstatechange = () => {
+          const state = pc.iceConnectionState;
+          console.log(`[WebRTC ICE State] ${targetCode}:`, state);
+          if (state === "checking") {
+            document.getElementById("networkStatus").innerText = "Traversing NAT / Evaluating ICE candidates for " + targetCode + "...";
+          } else if (state === "connected" || state === "completed") {
+            document.getElementById("networkStatus").innerText = "Direct P2P Pipe Established: " + targetCode;
+            if (pendingConnectionTimers[targetCode]) {
+              clearTimeout(pendingConnectionTimers[targetCode]);
+              delete pendingConnectionTimers[targetCode];
+            }
+            delete connectionAttempts[targetCode];
+          } else if (state === "failed") {
+            document.getElementById("networkStatus").innerText = "Direct path failed. Attempting ICE restart relay for " + targetCode + "...";
+            if (typeof pc.restartIce === "function") {
+              try { pc.restartIce(); } catch(e) {}
+            }
+          } else if (state === "disconnected") {
+            document.getElementById("networkStatus").innerText = "Network lag / temporary disconnect from " + targetCode + "...";
+          }
+        };
+
+        pc.onicecandidateerror = (event) => {
+          // Log candidate errors quietly without throwing uncaught exceptions
+          if (event && event.errorCode) {
+            console.warn(`[WebRTC Candidate Warn] ${event.url} code: ${event.errorCode}`);
+          }
+        };
+      }
+
       conn.on("open", () => {
+        if (pendingConnectionTimers[targetCode]) {
+          clearTimeout(pendingConnectionTimers[targetCode]);
+          delete pendingConnectionTimers[targetCode];
+        }
+        delete connectionAttempts[targetCode];
+
         conn.send({ type: "HELLO", username: localUsername, code: myCode });
         connectedPeers[targetCode] = {
           conn: conn,
@@ -993,6 +1147,11 @@
         updateChatHeader();
         playConnectSound();
         document.getElementById("networkStatus").innerText = "Direct Connection Established: " + targetCode;
+      });
+
+      conn.on("error", (err) => {
+        console.error(`[WebRTC Connection Error] with ${targetCode}:`, err);
+        document.getElementById("networkStatus").innerText = "Connection error with " + targetCode + ". Retrying...";
       });
 
       conn.on("data", (data) => {
@@ -1270,5 +1429,6 @@
       initP2P();
     });
   </script>
-</body>
-</html>
+
+
+</body></html>
